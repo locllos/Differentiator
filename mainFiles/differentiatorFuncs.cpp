@@ -47,6 +47,7 @@ const char* VARIABLES = "xyz";
 const double VAR_BUFFER[31] = {};
 const char VALID_SYMBOLS[] = ".-";
 const char* DOT_COMMAND = "dot -Tpng ";
+const char* TEX_COMMAND = "pdflatex ";
 
 //Service funcs
 void systemCall(const char* filename, const char* graph_filename)
@@ -78,6 +79,18 @@ void systemCall(const char* filename, const char* graph_filename)
     
     system(command);
 
+    free(command);
+}
+
+void systemCall(const char* tex_filename)
+{
+    char* command = (char*)calloc(96, sizeof(char));
+
+    strcpy(command, TEX_COMMAND);
+    strcat(command, tex_filename);
+
+    system(command);
+    
     free(command);
 }
 
@@ -1026,9 +1039,9 @@ void Simplify(Tree* tree)
     while (simplifyNeutral(tree->root) || simplifyConsts(tree->root));
 }
 
-void writeEquationTex(Node* node)
+void writeEquationTex(Node* node, const char* tex_filename)
 {
-    FILE* file = fopen("tex.txt", "w");
+    FILE* file = fopen(tex_filename, "w");
     // char* buffer = readFile("serviceFiles/some_info.txt", nullptr);
 
     fprintf(file, "\\documentclass{article}\n");
@@ -1050,7 +1063,7 @@ void writeEquationTex(Node* node)
     fclose(file);
     // free(buffer);
 
-    system("pdflatex tex.txt");
+    systemCall(tex_filename);
 }
 
 void writeNodeToTexAndGoNext(FILE* file, Node* node, const char* open, const char* close)

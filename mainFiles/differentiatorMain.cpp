@@ -6,19 +6,23 @@ int main()
 
     drawGraph(tree, "Graphs/Graph.png");
 
-    Tree* copy_tree = Derivative(tree);
+    Tree* diff_tree = Derivative(tree);
 
     Simplify(tree);
 
     drawGraph(tree, "Graphs/Graph_simple.png");
 
-    drawGraph(copy_tree, "Graphs/Diff.png");
+    drawGraph(diff_tree, "Graphs/Diff.png");
 
-    Simplify(copy_tree);
+    Simplify(diff_tree);
 
-    drawGraph(copy_tree, "Graphs/Diff_simple.png");
+    drawGraph(diff_tree, "Graphs/Diff_simple.png");
 
-    writeEquationTex(copy_tree->root);
+    writeEquationTex(diff_tree->root, "diff_tex.txt");
+    writeEquationTex(tree->root, "func_tex.txt");
+
+    destructTree(tree);
+    destructTree(diff_tree);
 
     return 0;
 }

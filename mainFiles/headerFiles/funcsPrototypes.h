@@ -10,6 +10,7 @@
 
 //Service funcs
 void        systemCall          (const char* filename, const char* graph_filename);
+void        systemCall          (const char* tex_filename);
 inline bool isVariable          (char* symbol);
 inline bool isValidSymbol       (char symbol);
 inline bool isOpenBracket       (char* symbol);
@@ -84,5 +85,6 @@ Node*       processOperation(Node* node);
 Node*       getDerivative   (Node* node);
 
 //Texify
-void        writeEquationTex(Node* node);
+void        writeEquationTex(Node* node, const char* tex_filename);
 void        writeEquation   (FILE* file, Node* node);
+
