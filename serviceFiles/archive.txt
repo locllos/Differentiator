@@ -1,0 +1,165 @@
+void writeAdd(FILE* file, Node* node)
+{   
+    dbg;
+    fprintf(file, "{(");
+    writeEquation(file, node->left);
+
+    fprintf(file, "}+{");
+
+    writeEquation(file, node->right);
+    fprintf(file, ")}");
+    dbg;
+}
+
+void writeSub(FILE* file, Node* node)
+{
+    dbg;
+    fprintf(file, "{(");
+    writeEquation(file, node->left);
+
+    fprintf(file, "}-{");
+
+    writeEquation(file, node->right);
+    fprintf(file, ")}");
+    dbg;
+}
+
+void writeMul(FILE* file, Node* node)
+{
+    dbg;
+    fprintf(file, "{");
+    writeEquation(file, node->left);
+
+    fprintf(file, "}\\cdot{");
+
+    writeEquation(file, node->right);
+    fprintf(file, "}");
+    dbg;
+}
+
+void writeDiv(FILE* file, Node* node)
+{
+    dbg;
+    fprintf(file, "\\frac");
+    fprintf(file, "{");
+    writeEquation(file, node->left);
+    fprintf(file, "}{");
+    writeEquation(file, node->right);
+    fprintf(file, "}");
+    dbg;
+}
+
+void writePow(FILE* file, Node* node)
+{
+    dbg;
+    fprintf(file, "{");
+    writeEquation(file, node->left);
+
+    fprintf(file, "}^{");
+
+    writeEquation(file, node->right);
+    fprintf(file, "}");
+    dbg;
+}
+
+void writeSin(FILE* file, Node* node)
+{
+    dbg;
+    fprintf(file, "\\sin");
+
+    fprintf(file, "{(");
+    writeEquation(file, node->left);
+    fprintf(file, ")}");
+    dbg;
+}
+
+void writeCos(FILE* file, Node* node)
+{
+    dbg;
+    fprintf(file, "\\cos");
+
+    fprintf(file, "{(");
+    writeEquation(file, node->left);
+    fprintf(file, ")}");
+    dbg;
+}
+
+void writeTan(FILE* file, Node* node)
+{
+    dbg;
+    fprintf(file, "\\tan");
+
+    fprintf(file, "{(");
+    writeEquation(file, node->left);
+    fprintf(file, ")}");
+    dbg;
+}
+
+void writeLog(FILE* file, Node* node)
+{
+    dbg;
+    fprintf(file, "\\log");
+
+    fprintf(file, "{(");
+    writeEquation(file, node->left);
+    fprintf(file, ")}");
+    dbg;
+
+}
+
+void writeExp(FILE* file, Node* node)
+{
+    dbg;
+    fprintf(file, "\\exp");
+
+    fprintf(file, "{(");
+    writeEquation(file, node->left);
+    fprintf(file, ")}");
+    dbg;
+}
+
+void Void(FILE* file, Node* node)
+{
+            switch (getOperationCode(node))
+        {
+            case (ADD_OP):
+                writeAdd(file, node);
+                break;
+            
+            case (SUB_OP):
+                writeSub(file, node);
+                break;
+
+            case (MUL_OP):
+                writeMul(file, node);
+                break;
+
+            case (DIV_OP):
+                writeDiv(file, node);
+                break;
+
+            case (POW_OP):
+                writePow(file, node);
+                break;
+
+            case (SIN_OP):
+                writeSin(file, node);
+                break;
+
+            case (COS_OP):
+                writeCos(file, node);
+                break;
+
+            case (TAN_OP):
+                writeTan(file, node);
+                break;
+
+            case (LOG_OP):
+                writeLog(file, node);
+                break;
+
+            case (EXP_OP):
+                writeExp(file, node);
+                break;
+        }
+}

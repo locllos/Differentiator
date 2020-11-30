@@ -1,0 +1,11 @@
+\documentclass{article}
+\usepackage[russian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
+\begin{document}
+
+$$
+{({{3}}\cdot{\frac{{1}}{{\cos{({x})}}^{{2}}}}}+{\frac{{\exp{({x})}}\cdot{\cos{(\exp{({x})})}}}{\sin{(\exp{({x})})}})}
+$$
+\end{document}
