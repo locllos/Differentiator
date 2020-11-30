@@ -132,25 +132,22 @@ bool isNumber(char* string)
 
 int getOperationNum(char* string)
 {
-    bool one_similar = false;
+    bool is_equal = false;
     size_t j = 0;
-    size_t match_counter = 0;
     for (size_t i = 0; i < AMOUNT_OPES; ++i)
     {   
+        is_equal = true;
         while (OPERS[i][j] != '\0')
-        {
-            if (OPERS[i][j] == string[j])
-            {
-                ++match_counter;
+        {   
+            if (OPERS[i][j] != string[j])
+            {   
+                is_equal = false;
+                break;
             }
             ++j;
         }
-        if (match_counter == j)
-        {
-            return i;
-        }
+        if (is_equal) return i;
         j = 0;
-        match_counter = 0;
     }
     return -1;
 }
