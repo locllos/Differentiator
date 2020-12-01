@@ -52,7 +52,7 @@ const char* TEX_COMMAND = "pdflatex ";
 //Service funcs
 void systemCall(const char* filename, const char* graph_filename)
 {
-    char* command = (char*)calloc(96, sizeof(char));
+    char command[96] = {};
 
     size_t i = 0;
     while (DOT_COMMAND[i] != '\0')
@@ -79,19 +79,17 @@ void systemCall(const char* filename, const char* graph_filename)
     
     system(command);
 
-    free(command);
 }
 
 void systemCall(const char* tex_filename)
 {
-    char* command = (char*)calloc(96, sizeof(char));
+    char command[96] = {};
 
     strcpy(command, TEX_COMMAND);
     strcat(command, tex_filename);
 
     system(command);
     
-    free(command);
 }
 
 inline bool isOpenBracket(char* symbol)
@@ -1036,11 +1034,8 @@ void Simplify(Tree* tree)
     while (simplifyNeutral(tree->root) || simplifyConsts(tree->root));
 }
 
-void writeEquationTex(Node* node, const char* tex_filename)
+void writeTexBegin(FILE* file)
 {
-    FILE* file = fopen(tex_filename, "w");
-    // char* buffer = readFile("serviceFiles/some_info.txt", nullptr);
-
     fprintf(file, "\\documentclass{article}\n");
 
     fprintf(file, "\\usepackage[russian]{babel}\n"
@@ -1049,16 +1044,47 @@ void writeEquationTex(Node* node, const char* tex_filename)
 
 
     fprintf(file, "\n\\begin{document}\n");
-    // fprintf(file, buffer);
+}
+
+void writeTexEnd(FILE* file)
+{
+    fprintf(file, "\\end{document}");
+}
+
+void writeEquationTex(Node* node, const char* tex_filename)
+{
+    FILE* file = fopen(tex_filename, "w");
+
+    writeTexEnd(file);
 
     fprintf(file, "\n$$\n");
     writeEquation(file, node);
     fprintf(file, "\n$$\n");
 
-    fprintf(file, "\\end{document}");
+    writeTexEnd(file);
 
     fclose(file);
-    // free(buffer);
+
+    systemCall(tex_filename);
+}
+
+void writeFuncAndHisDiff(Tree* tree, Tree* diff_tree, const char* tex_filename)
+{
+    FILE* file = fopen(tex_filename, "w");
+
+    writeTexBegin(file);
+
+    fprintf(file, "\n$$\n");
+    writeEquation(file, tree->root);
+    fprintf(file, "\n$$\n");
+
+    fprintf(file, "\n$$\n");
+    writeEquation(file, diff_tree->root);
+    fprintf(file, "\n$$\n");
+
+    writeTexEnd(file);
+
+    fclose(file);
 
     systemCall(tex_filename);
 }
@@ -1067,8 +1093,6 @@ void writeNodeToTexAndGoNext(FILE* file, Node* node, const char* open, const cha
 {
     if (getOperationCode(node) == DIV_OP)
     {
-        printf("NODE FUNC!\n=====\n");
-        showNode(node);
         fprintf(file, "\\frac");
         fprintf(file, "%s", open);
         writeEquation(file, node->left);
@@ -1078,8 +1102,6 @@ void writeNodeToTexAndGoNext(FILE* file, Node* node, const char* open, const cha
     }
     else if (isHas2Args(node))
     {
-        printf("NODE HAS TWO ARGS!\n=====\n");
-        showNode(node);
         fprintf(file, "%s", open);
         writeEquation(file, node->left);
         fprintf(file, "}%s{", TEX_EQUIVALENTS[getOperationCode(node)]);
@@ -1088,8 +1110,6 @@ void writeNodeToTexAndGoNext(FILE* file, Node* node, const char* open, const cha
     }
     else
     {
-        printf("NODE HAS ONE ARG!\n=====\n");
-        showNode(node);
         fprintf(file, "%s", TEX_EQUIVALENTS[getOperationCode(node)]);
         fprintf(file, "%s", open);
         writeEquation(file, node->left);
@@ -1099,7 +1119,6 @@ void writeNodeToTexAndGoNext(FILE* file, Node* node, const char* open, const cha
 
 void writeEquation(FILE* file, Node* node)
 {   
-    dbg;
     if (node == nullptr) return;
     if (node->type != OPERATION)
     {   
@@ -1112,12 +1131,10 @@ void writeEquation(FILE* file, Node* node)
     {
         if (possibleSkipBrackets(node))
         {   
-            printf("SKIP BRACKETS\n");
             writeNodeToTexAndGoNext(file, node, "{", "}");
         }
         else
         {
-            printf("PRINT BRACKETS\n");
             writeNodeToTexAndGoNext(file, node, "{(", ")}");
         }
     }

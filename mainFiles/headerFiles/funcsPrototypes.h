@@ -85,6 +85,7 @@ Node*       processOperation(Node* node);
 Node*       getDerivative   (Node* node);
 
 //Texify
-void        writeEquationTex(Node* node, const char* tex_filename);
-void        writeEquation   (FILE* file, Node* node);
+void        writeEquationTex    (Node* node, const char* tex_filename);
+void        writeFuncAndHisDiff (Tree* tree, Tree* diff_tree, const char* tex_filename);
+void        writeEquation       (FILE* file, Node* node);
 

@@ -18,8 +18,7 @@ int main()
 
     drawGraph(diff_tree, "Graphs/Diff_simple.png");
 
-    writeEquationTex(diff_tree->root, "diff_tex.txt");
-    writeEquationTex(tree->root, "func_tex.txt");
+    writeFuncAndHisDiff(tree, diff_tree, "tex.txt");
 
     destructTree(tree);
     destructTree(diff_tree);
